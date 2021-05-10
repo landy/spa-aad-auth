@@ -1,10 +1,11 @@
 ﻿module safer.Client.View
 
 open Fable.Core.JS
+open Fable.OidcClient
 open Feliz
 open Router
 open SharedView
-open safer.Client.AuthManager
+open safer.Client.AuthContext
 
 
 [<ReactComponent>]
@@ -13,6 +14,7 @@ let AppView () =
 
     // routing for full refreshed page (to fix wrong urls)
     React.useEffectOnce (fun _ -> Router.navigatePage page)
+    let authManager = Oidc.UserManager.Create authServerSettings
 
     let navigation =
         Html.div [
@@ -30,14 +32,17 @@ let AppView () =
             console.log("test")
             promise {
                 console.log "mgr.signinRedirectCallback()"
-                let! user = mgr.signinRedirectCallback()
+                let! user = authManager.signinRedirectCallback()
                 console.log (sprintf "user: %A" user)
             } |> ignore
             Html.div "user"
 
         | Page.About -> Html.text "SAFEr Template"
-    React.router [
-        router.pathMode
-        router.onUrlChanged (Page.parseFromUrlSegments >> setPage)
-        router.children [ navigation; render ]
-    ]
+    let app =
+        React.router [
+            router.pathMode
+            router.onUrlChanged (Page.parseFromUrlSegments >> setPage)
+            router.children [ navigation; render ]
+        ]
+
+    AuthContext authManager app

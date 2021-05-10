@@ -9,13 +9,13 @@ open safer.Client
 open Fable.Import
 open Fable.OidcClient
 open Fable.Core.JsInterop
-
-open safer.Client.AuthManager
-
+open safer.Client.AuthContext
 
 
 [<ReactComponent>]
 let IndexView () =
+
+    let mgr = React.useContext(authContext)
 
     Html.div [
         Html.div "Auth page"

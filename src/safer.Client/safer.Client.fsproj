@@ -6,7 +6,7 @@
     <ItemGroup>
         <Compile Include="Server.fs" />
         <Compile Include="Router.fs" />
-        <Compile Include="AuthManager.fs" />
+        <Compile Include="AuthContext.fs" />
         <Compile Include="SharedView.fs" />
         <Compile Include="Pages\Index.fs" />
         <Compile Include="Pages\Auth.fs" />
